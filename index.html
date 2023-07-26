@@ -71,7 +71,7 @@
         function getShapeIndexFromCoordinates(x, y) {
             const tileSize = 100;
             const tileOffsetX = drawnText === tileSize;
-            const tileOffsetY = drawnText === "Hexagon" ? (tileSize * Math.sqrt(3)) / 2 : tileSize;
+            const tileOffsetY = drawnText === "Hexagon" ? (3 / Math.sqrt(3) * tileSize) / 2 : tileSize;
             let rowOffset = drawnText === "Triangle" ? 0 : tileOffsetX / 2;
 
             let col = Math.floor(x / tileOffsetX);
@@ -191,7 +191,7 @@
 
             const tileSize = 100;
             const tileOffsetX = drawnText === tileSize;
-            const tileOffsetY = drawnText === "Hexagon" ? (tileSize * Math.sqrt(3)) / 2 : tileSize;
+            const tileOffsetY = drawnText === "Hexagon" ? (3 / Math.sqrt(3) * tileSize) / 2 : tileSize;
             let rowOffset = drawnText === "Triangle" ? 0 : tileOffsetX / 2;
 
             if (infiniteTiling) {

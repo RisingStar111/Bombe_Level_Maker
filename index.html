@@ -47,8 +47,8 @@
             <button onclick="exportTextToClipboard()">Export Text</button>
         </div>
         <div>
-            <label for="textSizeInput">Text Size:</label>
-            <input type="text" id="textSizeInput" oninput="updateTextSize()" maxlength="3" pattern="[0-9]*">
+            <label for="tileSizeInput">Tile Size:</label>
+            <input type="text" id="TileSizeInput" oninput="updateTileSize()" maxlength="3" pattern="[0-9]*">
         </div>
     </div>
     <div id="controlPanel">
@@ -65,13 +65,14 @@
         const lastClickDisplay = document.getElementById('lastClickDisplay');
         let tileSize = 100; // Default text size
 
-        function updateTextSize() {
-            const inputElement = document.getElementById('textSizeInput');
+        function updateTileSize() {
+            const inputElement = document.getElementById('tileSizeInput');
             const value = inputElement.value;
 
             // Check if the input is a valid number and update the tileSize variable
             if (/^\d+$/.test(value)) {
                 tileSize = parseInt(value, 10);
+                drawShapeOnCanvas();
             } else {
                 // If the input is not a valid number, set it back to the previous value
                 inputElement.value = tileSize;
@@ -204,7 +205,6 @@
         function drawShapeOnCanvas() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            const tileSize = 100;
             const tileOffsetX = drawnText === "Triangle" ? tileSize / 2 : tileSize;
             const tileOffsetY = drawnText === "Square" ? tileSize : (3 / Math.sqrt(3) * tileSize) / 2;
             let rowOffset = drawnText === "Triangle" ? 0 : tileOffsetX / 2;

@@ -188,7 +188,7 @@
 
             const tileSize = 100;
             const tileOffsetX = drawnText === "Triangle" ? tileSize / 2 : tileSize;
-            const tileOffsetY = drawnText === "Hexagon" ? (3 / Math.sqrt(3) * tileSize) / 2 : tileSize;
+            const tileOffsetY = drawnText === "Square" ? tileSize : (3 / Math.sqrt(3) * tileSize) / 2;
             let rowOffset = drawnText === "Triangle" ? 0 : tileOffsetX / 2;
 
             if (infiniteTiling) {
@@ -199,7 +199,7 @@
                         if (drawnText === "Square") {
                             drawSquare(i, j);
                         } else if (drawnText === "Triangle") {
-                            drawTriangle(i, j + (alternateRow ? -tileOffsetY / 2 : tileOffsetY / 2), alternateRow);
+                            drawTriangle(i, j, alternateRow);
                             alternateRow = !alternateRow;
                         } else if (drawnText === "Hexagon") {
                             drawHexagon(i + (j % (tileOffsetY * 2) === 0 ? 0 : tileOffsetX / 2), j);

@@ -83,29 +83,44 @@
         }
 
         function drawSquare(x, y) {
+            const size = 100;
             ctx.fillStyle = 'blue';
-            ctx.strokeRect(x, y, 100, 100);
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.lineTo(x + size, y);
+            ctx.lineTo(x + size, y + size);
+            ctx.lineTo(x, y + size);
+            ctx.closePath();
+            ctx.stroke();
         }
 
-        function drawTriangle(x, y) {
+        function drawTriangle(x, y, upsideDown) {
+            const size = 100;
             ctx.fillStyle = 'green';
             ctx.beginPath();
-            ctx.moveTo(x + 50, y);
-            ctx.lineTo(x, y + 100);
-            ctx.lineTo(x + 100, y + 100);
+            if (upsideDown) {
+                ctx.moveTo(x + size, y);
+                ctx.lineTo(x + size / 2, y + (Math.sqrt(3) / 2) * size);
+                ctx.lineTo(x, y);
+            } else {
+                ctx.moveTo(x, y);
+                ctx.lineTo(x + size, y);
+                ctx.lineTo(x + size / 2, y + (Math.sqrt(3) / 2) * size);
+            }
             ctx.closePath();
             ctx.stroke();
         }
 
         function drawHexagon(x, y) {
+            const size = 100;
             ctx.fillStyle = 'orange';
             ctx.beginPath();
-            ctx.moveTo(x + 50, y);
-            ctx.lineTo(x, y + 25);
-            ctx.lineTo(x, y + 75);
-            ctx.lineTo(x + 50, y + 100);
-            ctx.lineTo(x + 100, y + 75);
-            ctx.lineTo(x + 100, y + 25);
+            ctx.moveTo(x + size / 2, y);
+            ctx.lineTo(x + size, y + (Math.sqrt(3) / 2) * size);
+            ctx.lineTo(x + size, y + (Math.sqrt(3) / 2) * size + size);
+            ctx.lineTo(x + size / 2, y + 2 * (Math.sqrt(3) / 2) * size + size);
+            ctx.lineTo(x, y + (Math.sqrt(3) / 2) * size + size);
+            ctx.lineTo(x, y + (Math.sqrt(3) / 2) * size);
             ctx.closePath();
             ctx.stroke();
         }
@@ -131,6 +146,7 @@
 
         function toggleTiling() {
             infiniteTiling = document.getElementById('toggleInfinite').checked;
+            drawShapeOnCanvas();
         }
 
         function setShape(shape) {
@@ -141,29 +157,34 @@
         function drawShapeOnCanvas() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            if (infiniteTiling) {
-                const tileSize = 100;
-                const tileOffsetX = drawnText === "Triangle" ? tileSize / 2 : tileSize;
-                const tileOffsetY = drawnText === "Hexagon" ? (tileSize * Math.sqrt(3)) / 2 : tileSize;
+            const tileSize = 100;
+            const tileOffsetX = drawnText === "Triangle" ? tileSize / 2 : tileSize;
+            const tileOffsetY = drawnText === "Hexagon" ? (tileSize * Math.sqrt(3)) / 2 : tileSize;
+            let rowOffset = drawnText === "Triangle" ? 0 : tileOffsetX / 2;
 
+            if (infiniteTiling) {
                 for (let i = 0; i < canvas.width + tileOffsetX; i += tileOffsetX) {
+                    let alternateRow = (rowOffset === 0) ? false : true;
+
                     for (let j = 0; j < canvas.height + tileOffsetY; j += tileOffsetY) {
                         if (drawnText === "Square") {
                             drawSquare(i, j);
                         } else if (drawnText === "Triangle") {
-                            drawTriangle(i, j);
+                            drawTriangle(i, j + (alternateRow ? -tileOffsetY / 2 : tileOffsetY / 2), alternateRow);
+                            alternateRow = !alternateRow;
                         } else if (drawnText === "Hexagon") {
-                            drawHexagon(i, j);
+                            drawHexagon(i + (j % (tileOffsetY * 2) === 0 ? 0 : tileOffsetX / 2), j);
                         }
                     }
+                    rowOffset = (rowOffset === 0) ? tileOffsetX / 2 : 0;
                 }
             } else {
                 if (drawnText === "Square") {
-                    drawSquare(100, 50);
+                    drawSquare(tileOffsetX, tileOffsetY);
                 } else if (drawnText === "Triangle") {
-                    drawTriangle(150, 50);
+                    drawTriangle(tileOffsetX, tileOffsetY, false);
                 } else if (drawnText === "Hexagon") {
-                    drawHexagon(150, 50);
+                    drawHexagon(tileOffsetX, tileOffsetY);
                 }
             }
         }

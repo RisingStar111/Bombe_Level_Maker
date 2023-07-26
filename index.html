@@ -34,9 +34,15 @@
         <canvas id="canvas" width="400" height="200"></canvas>
         <div id="buttons">
             <button onclick="drawText()">Draw Text</button>
+            <button onclick="setShape('Square')">Generate Square</button>
+            <button onclick="setShape('Triangle')">Generate Triangle</button>
+            <button onclick="setShape('Hexagon')">Generate Hexagon</button>
             <button onclick="clearCanvas()">Clear Canvas</button>
             <button onclick="exportTextToClipboard()">Export Text</button>
         </div>
+    </div>
+    <div>
+        <input type="checkbox" id="toggleInfinite" onchange="toggleTiling()"> Toggle Infinite
     </div>
 
     <script>
@@ -44,6 +50,7 @@
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
         let drawnText = "";
+        let infiniteTiling = false;
 
         function drawText() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -52,6 +59,34 @@
             const text = "Sample Text";
             ctx.fillText(text, 50, 100);
             drawnText = text;
+        }
+
+        function drawSquare(x, y) {
+            ctx.fillStyle = 'blue';
+            ctx.fillRect(x, y, 100, 100);
+        }
+
+        function drawTriangle(x, y) {
+            ctx.fillStyle = 'green';
+            ctx.beginPath();
+            ctx.moveTo(x + 50, y);
+            ctx.lineTo(x, y + 100);
+            ctx.lineTo(x + 100, y + 100);
+            ctx.closePath();
+            ctx.fill();
+        }
+
+        function drawHexagon(x, y) {
+            ctx.fillStyle = 'orange';
+            ctx.beginPath();
+            ctx.moveTo(x + 50, y);
+            ctx.lineTo(x, y + 25);
+            ctx.lineTo(x, y + 75);
+            ctx.lineTo(x + 50, y + 100);
+            ctx.lineTo(x + 100, y + 75);
+            ctx.lineTo(x + 100, y + 25);
+            ctx.closePath();
+            ctx.fill();
         }
 
         function clearCanvas() {
@@ -70,6 +105,41 @@
                 alert('Text copied to clipboard: ' + drawnText);
             } else {
                 alert('No text to copy.');
+            }
+        }
+
+        function toggleTiling() {
+            infiniteTiling = document.getElementById('toggleInfinite').checked;
+        }
+
+        function setShape(shape) {
+            drawnText = shape;
+            drawShapeOnCanvas();
+        }
+
+        function drawShapeOnCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            if (infiniteTiling) {
+                for (let i = 0; i < canvas.width; i += 100) {
+                    for (let j = 0; j < canvas.height; j += 100) {
+                        if (drawnText === "Square") {
+                            drawSquare(i, j);
+                        } else if (drawnText === "Triangle") {
+                            drawTriangle(i, j);
+                        } else if (drawnText === "Hexagon") {
+                            drawHexagon(i, j);
+                        }
+                    }
+                }
+            } else {
+                if (drawnText === "Square") {
+                    drawSquare(100, 50);
+                } else if (drawnText === "Triangle") {
+                    drawTriangle(150, 50);
+                } else if (drawnText === "Hexagon") {
+                    drawHexagon(150, 50);
+                }
             }
         }
     </script>

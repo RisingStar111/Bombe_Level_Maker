@@ -26,6 +26,11 @@
             padding: 10px 20px;
             margin: 5px;
         }
+        #controlPanel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
     </style>
 </head>
 <body>
@@ -41,8 +46,9 @@
             <button onclick="exportTextToClipboard()">Export Text</button>
         </div>
     </div>
-    <div>
+    <div id="controlPanel">
         <input type="checkbox" id="toggleInfinite" onchange="toggleTiling()"> Toggle Infinite
+        <div id="lastClickDisplay"></div>
     </div>
 
     <script>
@@ -51,6 +57,21 @@
         const ctx = canvas.getContext('2d');
         let drawnText = "";
         let infiniteTiling = false;
+        const lastClickDisplay = document.getElementById('lastClickDisplay');
+
+        function displayLastClickPosition(x, y) {
+            lastClickDisplay.innerText = `Last Click Position: (x: ${x}, y: ${y})`;
+        }
+
+        canvas.addEventListener('click', function (event) {
+            const rect = canvas.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+
+            // Use the x and y values to perform actions based on the user's click position
+            console.log('Clicked at (x, y):', x, y);
+            displayLastClickPosition(x, y);
+        });
 
         function drawText() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -63,7 +84,7 @@
 
         function drawSquare(x, y) {
             ctx.fillStyle = 'blue';
-            ctx.fillRect(x, y, 100, 100);
+            ctx.strokeRect(x, y, 100, 100);
         }
 
         function drawTriangle(x, y) {
@@ -73,7 +94,7 @@
             ctx.lineTo(x, y + 100);
             ctx.lineTo(x + 100, y + 100);
             ctx.closePath();
-            ctx.fill();
+            ctx.stroke();
         }
 
         function drawHexagon(x, y) {
@@ -86,7 +107,7 @@
             ctx.lineTo(x + 100, y + 75);
             ctx.lineTo(x + 100, y + 25);
             ctx.closePath();
-            ctx.fill();
+            ctx.stroke();
         }
 
         function clearCanvas() {
@@ -121,8 +142,12 @@
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
             if (infiniteTiling) {
-                for (let i = 0; i < canvas.width; i += 100) {
-                    for (let j = 0; j < canvas.height; j += 100) {
+                const tileSize = 100;
+                const tileOffsetX = drawnText === "Triangle" ? tileSize / 2 : tileSize;
+                const tileOffsetY = drawnText === "Hexagon" ? (tileSize * Math.sqrt(3)) / 2 : tileSize;
+
+                for (let i = 0; i < canvas.width + tileOffsetX; i += tileOffsetX) {
+                    for (let j = 0; j < canvas.height + tileOffsetY; j += tileOffsetY) {
                         if (drawnText === "Square") {
                             drawSquare(i, j);
                         } else if (drawnText === "Triangle") {

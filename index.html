@@ -41,6 +41,8 @@
             <button onclick="drawText()">Draw Text</button>
             <button onclick="setShape('Square')">Generate Square</button>
             <button onclick="setShape('Triangle')">Generate Triangle</button>
+        </div>
+        <div id="buttons2">
             <button onclick="setShape('Hexagon')">Generate Hexagon</button>
             <button onclick="clearCanvas()">Clear Canvas</button>
             <button onclick="exportTextToClipboard()">Export Text</button>
@@ -189,7 +191,7 @@
         function drawShapeOnCanvas() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            const tileSize = 100;
+            const tileSize = drawnText === "Triangle" ? tileSize / 2 : tileSize;
             const tileOffsetX = tileSize;
             const tileOffsetY = drawnText === "Hexagon" ? (3 / Math.sqrt(3) * tileSize) / 2 : tileSize;
             let rowOffset = drawnText === "Triangle" ? 0 : tileOffsetX / 2;
@@ -203,11 +205,10 @@
                             drawSquare(i, j);
                         } else if (drawnText === "Triangle") {
                             drawTriangle(i, j + (alternateRow ? -tileOffsetY / 2 : tileOffsetY / 2), alternateRow);
-                            alternateRow = (i + j) % 2 == 0 ? true : false;
+                            alternateRow = !alternateRow;
                         } else if (drawnText === "Hexagon") {
                             drawHexagon(i + (j % (tileOffsetY * 2) === 0 ? 0 : tileOffsetX / 2), j);
                         }
-                        console.log(i,j);
                     }
                     rowOffset = (rowOffset === 0) ? tileOffsetX / 2 : 0;
                 }

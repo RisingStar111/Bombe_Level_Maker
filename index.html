@@ -220,7 +220,8 @@
                             drawTriangle(i, j, alternateRow);
                             alternateRow = !alternateRow;
                         } else if (drawnText === "Hexagon") {
-                            drawHexagon(i + (alternateRow ? 0 : tileOffsetX / 2), j);
+                            drawHexagon(i + (j % (tileOffsetY * 2) === 0 ? 0 : tileOffsetX / 2), j);
+                            console.log(j, tileOffsetY, (j % (tileOffsetY * 2)));
                         }
                     }
                     rowOffset = (rowOffset === 0) ? tileOffsetX / 2 : 0;

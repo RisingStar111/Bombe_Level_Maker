@@ -207,6 +207,7 @@
                         } else if (drawnText === "Hexagon") {
                             drawHexagon(i + (j % (tileOffsetY * 2) === 0 ? 0 : tileOffsetX / 2), j);
                         }
+                        console.log(i,j);
                     }
                     rowOffset = (rowOffset === 0) ? tileOffsetX / 2 : 0;
                 }

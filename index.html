@@ -53,6 +53,22 @@
     </div>
     <div id="controlPanel">
         <input type="checkbox" id="toggleInfinite" onchange="toggleTiling()"> Toggle Infinite
+        <div id="selectionPanel">
+            <button class="selectionButton" onclick="setSelection('x')">x</button>
+            <button class="selectionButton" onclick="setSelection('x+')">x+</button>
+            <button class="selectionButton" onclick="setSelection('x-')">x-</button>
+            <button class="selectionButton" onclick="setSelection('!x')">!x</button>
+            <button class="selectionButton" onclick="setSelection('x+2*')">x+2*</button>
+            <button class="selectionButton" onclick="setSelection('x/x+1')">x/x+1</button>
+            <button class="selectionButton" onclick="setSelection('x/x+2')">x/x+2</button>
+            <button class="selectionButton" onclick="setSelection('x/x+3')">x/x+3</button>
+            <button class="selectionButton" onclick="setSelection('x/x+1/x+2')">x/x+1/x+2</button>
+            <button class="selectionButton" onclick="setSelection('x/x+2/x+4')">x/x+2/x+4</button>
+        </div>
+        <div>
+            <label for="chosenNumberInput">Chosen Number:</label>
+            <input type="text" id="chosenNumberInput" oninput="updateChosenNumber()" maxlength="5" pattern="[0-9]*">
+        </div>
         <div id="lastClickDisplay"></div>
     </div>
 
@@ -64,6 +80,26 @@
         let infiniteTiling = false;
         const lastClickDisplay = document.getElementById('lastClickDisplay');
         let tileSize = 100; // Default text size
+        let selection = ''; // Stores the selected option
+        let chosenNumber = 0; // Default value for chosen number
+
+        function updateChosenNumber() {
+            const inputElement = document.getElementById('chosenNumberInput');
+            const value = inputElement.value;
+
+            // Check if the input is a valid integer and update the chosenNumber variable
+            if (/^\d+$/.test(value)) {
+                chosenNumber = parseInt(value, 10);
+            } else {
+                // If the input is not a valid integer, set it back to the previous value
+                inputElement.value = chosenNumber;
+            }
+        }
+
+        function setSelection(option) {
+            selection = option;
+            console.log('Selected option:', selection);
+        }
 
         function updateTileSize() {
             const inputElement = document.getElementById('tileSizeInput');

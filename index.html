@@ -26,6 +26,10 @@
             top: 10px;
             right: 10px;
         }
+        #textSizeInput {
+            width: 50px;
+            padding: 5px;
+        }
     </style>
 </head>
 <body>
@@ -42,6 +46,10 @@
             <button onclick="clearCanvas()">Clear Canvas</button>
             <button onclick="exportTextToClipboard()">Export Text</button>
         </div>
+        <div>
+            <label for="textSizeInput">Text Size:</label>
+            <input type="text" id="textSizeInput" oninput="updateTextSize()" maxlength="3" pattern="[0-9]*">
+        </div>
     </div>
     <div id="controlPanel">
         <input type="checkbox" id="toggleInfinite" onchange="toggleTiling()"> Toggle Infinite
@@ -55,6 +63,20 @@
         let drawnText = "";
         let infiniteTiling = false;
         const lastClickDisplay = document.getElementById('lastClickDisplay');
+        let tileSize = 100; // Default text size
+
+        function updateTextSize() {
+            const inputElement = document.getElementById('textSizeInput');
+            const value = inputElement.value;
+
+            // Check if the input is a valid number and update the tileSize variable
+            if (/^\d+$/.test(value)) {
+                tileSize = parseInt(value, 10);
+            } else {
+                // If the input is not a valid number, set it back to the previous value
+                inputElement.value = tileSize;
+            }
+        }
 
         function displayLastClickPosition(x, y) {
             lastClickDisplay.innerText = `Last Click Position: (x: ${x}, y: ${y})`;
@@ -66,7 +88,6 @@
         }
 
         function getShapeIndexFromCoordinates(x, y) {
-            const tileSize = 100;
             const tileOffsetX = drawnText === tileSize;
             const tileOffsetY = drawnText === "Hexagon" ? (3 / Math.sqrt(3) * tileSize) / 2 : tileSize;
             let rowOffset = drawnText === "Triangle" ? 0 : tileOffsetX / 2;
@@ -112,44 +133,41 @@
         }
 
         function drawSquare(x, y) {
-            const size = 100;
             ctx.fillStyle = 'blue';
             ctx.beginPath();
             ctx.moveTo(x, y);
-            ctx.lineTo(x + size, y);
-            ctx.lineTo(x + size, y + size);
-            ctx.lineTo(x, y + size);
+            ctx.lineTo(x + tileSize, y);
+            ctx.lineTo(x + tileSize, y + tileSize);
+            ctx.lineTo(x, y + tileSize);
             ctx.closePath();
             ctx.stroke();
         }
 
         function drawTriangle(x, y, upsideDown) {
-            const size = 100;
             ctx.fillStyle = 'green';
             ctx.beginPath();
             if (upsideDown) {
-                ctx.moveTo(x + size, y + (Math.sqrt(3) / 2) * size);
-                ctx.lineTo(x + size / 2,y);
-                ctx.lineTo(x, y + (Math.sqrt(3) / 2) * size);
+                ctx.moveTo(x + tileSize, y + (Math.sqrt(3) / 2) * tileSize);
+                ctx.lineTo(x + tileSize / 2,y);
+                ctx.lineTo(x, y + (Math.sqrt(3) / 2) * tileSize);
             } else {
                 ctx.moveTo(x, y);
-                ctx.lineTo(x + size, y);
-                ctx.lineTo(x + size / 2, y + (Math.sqrt(3) / 2) * size);
+                ctx.lineTo(x + tileSize, y);
+                ctx.lineTo(x + tileSize / 2, y + (Math.sqrt(3) / 2) * tileSize);
             }
             ctx.closePath();
             ctx.stroke();
         }
 
         function drawHexagon(x, y) {
-            const size = 100;
             ctx.fillStyle = 'orange';
             ctx.beginPath();
-            ctx.moveTo(x + size / 2, y);
-            ctx.lineTo(x + size, y + (1 / Math.sqrt(3)) * size / 2);
-            ctx.lineTo(x + size, y + (3 / Math.sqrt(3)) * size / 2);
-            ctx.lineTo(x + size / 2, y + (4 / Math.sqrt(3)) * size / 2);
-            ctx.lineTo(x, y + (3 / Math.sqrt(3)) * size / 2);
-            ctx.lineTo(x, y + (1 / Math.sqrt(3)) * size / 2);
+            ctx.moveTo(x + tileSize / 2, y);
+            ctx.lineTo(x + tileSize, y + (1 / Math.sqrt(3)) * tileSize / 2);
+            ctx.lineTo(x + tileSize, y + (3 / Math.sqrt(3)) * tileSize / 2);
+            ctx.lineTo(x + tileSize / 2, y + (4 / Math.sqrt(3)) * tileSize / 2);
+            ctx.lineTo(x, y + (3 / Math.sqrt(3)) * tileSize / 2);
+            ctx.lineTo(x, y + (1 / Math.sqrt(3)) * tileSize / 2);
             ctx.closePath();
             ctx.stroke();
         }

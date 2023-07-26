@@ -11,15 +11,16 @@
             text-align: center;
             margin: 20px;
         }
+        #canvasContainer {
+            position: relative;
+        }
         canvas {
             border: 1px solid #ccc;
         }
-        #textbox {
-            width: 300px;
-            height: 100px;
-        }
         #buttons {
-            margin-top: 10px;
+            position: absolute;
+            top: 10px;
+            left: 10px;
         }
         button {
             padding: 10px 20px;
@@ -29,40 +30,47 @@
 </head>
 <body>
     <h1>Website Template</h1>
-    <div>
-        <textarea id="textbox" placeholder="Enter text here"></textarea>
+    <div id="canvasContainer">
+        <canvas id="canvas" width="400" height="200"></canvas>
+        <div id="buttons">
+            <button onclick="drawText()">Draw Text</button>
+            <button onclick="clearCanvas()">Clear Canvas</button>
+            <button onclick="exportTextToClipboard()">Export Text</button>
+        </div>
     </div>
-    <div id="buttons">
-        <button onclick="drawText()">Draw Text</button>
-        <button onclick="clearCanvas()">Clear Canvas</button>
-        <button onclick="exportCanvas()">Export</button>
-    </div>
-    <canvas id="canvas" width="400" height="200"></canvas>
 
     <script>
         // Add your JavaScript code here
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
-        const textbox = document.getElementById('textbox');
+        let drawnText = "";
 
         function drawText() {
-            const text = textbox.value;
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = 'black';
             ctx.font = '20px Arial';
+            const text = "Sample Text";
             ctx.fillText(text, 50, 100);
+            drawnText = text;
         }
 
         function clearCanvas() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawnText = "";
         }
 
-        function exportCanvas() {
-            const dataURL = canvas.toDataURL('image/png');
-            const link = document.createElement('a');
-            link.download = 'canvas_image.png';
-            link.href = dataURL;
-            link.click();
+        function exportTextToClipboard() {
+            if (drawnText) {
+                const el = document.createElement('textarea');
+                el.value = drawnText;
+                document.body.appendChild(el);
+                el.select();
+                document.execCommand('copy');
+                document.body.removeChild(el);
+                alert('Text copied to clipboard: ' + drawnText);
+            } else {
+                alert('No text to copy.');
+            }
         }
     </script>
 </body>

@@ -114,7 +114,7 @@
         }
 
         function numToAlph(num) {
-            return String.fromCharCode(num + 64);
+            return String.fromCharCode(num + 65); // 0 = A
         }
 
         class IndexCoord {
@@ -311,8 +311,7 @@
                 }
                 outString += indexCoords[i].clueType;
                 if (indexCoords[i].clueType != "!") {
-                    console.log(indexCoords[i].clueType, indexCoords[i].clueType == "!");
-                    outString += numToAlph(indexCoords[i].clueNumber + 1);
+                    outString += indexCoords[i].clueNumber;
                 }
             }
             outString += "\"}";

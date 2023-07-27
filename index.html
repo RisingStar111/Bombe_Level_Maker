@@ -311,7 +311,8 @@
                 }
                 outString += indexCoords[i].clueType;
                 if (indexCoords[i].clueType != "!") {
-                    outString += numToAlph(indexCoords[i].clueNumber - 1);
+                    console.log(indexCoords[i].clueType, indexCoords[i].clueType == "!");
+                    outString += numToAlph(indexCoords[i].clueNumber + 1);
                 }
             }
             outString += "\"}";

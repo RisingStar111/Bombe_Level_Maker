@@ -212,7 +212,7 @@
         }
 
         function drawText(x, y, text) {
-            ctx.clearRect(x, Math.max(0, y-20), 5*text.length, 20);
+            ctx.clearRect(x, Math.max(0, y-20), 12*text.length, 20);
             ctx.fillStyle = 'black';
             ctx.font = '20px Arial';
             ctx.fillText(text, x, y);
@@ -311,7 +311,7 @@
                         yPos -= !alternateRow ? tileOffsetX / Math.sqrt(3) : tileOffsetY - (Math.sqrt(3) - 1) * tileOffsetX / Math.sqrt(3);
                         alternateRow = !alternateRow;
                     } else if (drawnText === "Hexagon") {
-                        xPos = xPos + (j % 2 === 0 ? 0 : tileOffsetX / 2);
+                        xPos += (j % 2 === 0 ? 0 : tileOffsetX / 2);
                         drawHexagon(xPos, yPos);
                         xPos += tileOffsetX/2;
                         yPos -= tileOffsetY/3;

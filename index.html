@@ -170,7 +170,7 @@
             // Check if the input is a valid number and update the tileSize variable
             if (/^\d+$/.test(value)) {
                 tileNumber = parseInt(value, 10);
-                tileSize = 400/tileSize;
+                tileSize = 400/tileNumber;
                 drawShapeOnCanvas();
             } else {
                 // If the input is not a valid number, set it back to the previous value

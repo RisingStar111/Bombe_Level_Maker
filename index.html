@@ -295,10 +295,10 @@
             const tileOffsetX = drawnText === "Triangle" ? tileSize / 2 : tileSize;
             const tileOffsetY = drawnText === "Square" ? tileSize : (3 / Math.sqrt(3) * tileSize) / 2;
 
-            for (let i = 0; i < tileNumber; i += 1) {
-                let alternateRow = j % 2 === 0 ? false : true;
-
-                for (let j = 0; j < tileNumber; j += 1) {
+            for (let j = 0; j < tileNumber; j += 1) {
+            let alternateRow = j % 2 === 0 ? false : true;
+            
+                for (let i = 0; i < tileNumber; i += 1) {
                     let xPos = i * tileOffsetX;
                     let yPox = j * tileOffsetY;
                     if (drawnText === "Square") {

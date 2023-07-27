@@ -54,9 +54,11 @@
             <label for="tileSizeInput2">Board Height:</label>
             <input type="text" id="tileSizeInput2" oninput="updateTileSize()" maxlength="3" pattern="[0-9]*">
         </div>
+        <div>
+            <input type="checkbox" id="toggleInfinite" onchange="toggleTiling()"> Toggle Infinite
+        </div>
     </div>
     <div id="controlPanel">
-        <input type="checkbox" id="toggleInfinite" onchange="toggleTiling()"> Toggle Infinite
         <input type="checkbox" id="toggleHidden" onchange="toggleHidden()"> Toggle Hidden
         <div id="selectionPanel">
             <button class="selectionButton" onclick="setSelection('x')">x</button>

@@ -304,18 +304,17 @@
                     if (drawnText === "Square") {
                         drawSquare(xPos, yPos);
                         xPos += tileOffsetX/2;
-                        yPos -= tileOffsetY/2;
+                        yPos += tileOffsetY/2;
                     } else if (drawnText === "Triangle") {
                         drawTriangle(xPos, yPos, alternateRow);
                         xPos += tileOffsetX;
-                        yPos -= !alternateRow ? tileOffsetX / Math.sqrt(3) : tileOffsetY - (Math.sqrt(3) - 1) * tileOffsetX / Math.sqrt(3);
+                        yPos += alternateRow ? tileOffsetX / Math.sqrt(3) : tileOffsetY - (Math.sqrt(3) - 1) * tileOffsetX / Math.sqrt(3);
                         alternateRow = !alternateRow;
                     } else if (drawnText === "Hexagon") {
                         xPos += (j % 2 === 0 ? 0 : tileOffsetX / 2);
                         drawHexagon(xPos, yPos);
                         xPos += tileOffsetX/2;
-                        yPos -= tileOffsetY/3;
-                        console.log(j, xPos, yPos, tileOffsetX);
+                        yPos += 2*tileOffsetY/3;
                     }
                     indexCoords.push(new IndexCoord(i + j * tileNumber, Math.max(Math.min(xPos, canvas.width), 0), Math.max(Math.min(yPos, canvas.height), 0)));
                 }

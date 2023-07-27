@@ -315,6 +315,7 @@
                         drawHexagon(xPos, yPos);
                         xPos += tileOffsetX/2;
                         yPos -= tileOffsetY/3;
+                        console.log(j, xPos, yPos, tileOffsetX);
                     }
                     indexCoords.push(new IndexCoord(i + j * tileNumber, Math.max(Math.min(xPos, canvas.width), 0), Math.max(Math.min(yPos, canvas.height), 0)));
                 }

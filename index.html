@@ -252,7 +252,6 @@
             ctx.fillStyle = 'black';
             ctx.font = '20px Arial';
             ctx.fillText(text, x, y);
-            drawnText = text;
         }
 
         function drawSquare(x, y) {
@@ -309,9 +308,9 @@
             for (let i = 0; i < indexCoords.length; i++) {
                 if (indexCoords[i].hidden) { // hidden
                     outString += "_";
-                    outString += indexCoords[i].clueType;
-                    outString += numToAlph(indexCoords[i].clueNumber);
                 }
+                outString += indexCoords[i].clueType;
+                outString += numToAlph(indexCoords[i].clueNumber - 1);
             }
             if (indexCoords.length > 0) {
                 const el = document.createElement('textarea');

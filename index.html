@@ -33,9 +33,9 @@
     </style>
 </head>
 <body>
-    <h1>Website Template</h1>
+    <h1>Bombe Level Maker (WIP)</h1>
     <div id="canvasContainer">
-        <canvas id="canvas" width="400" height="400"></canvas>
+        <canvas id="canvas" width="500" height="500"></canvas>
         <div id="buttons">
             <button onclick="drawText()">Draw Text</button>
             <button onclick="setShape('Square')">Generate Square</button>
@@ -300,7 +300,7 @@
         }
 
         function exportTextToClipboard() {
-            let outString = "{\"";
+            let outString = "{\"level\":\"";
             outString += typeToAlph[drawnText]; // board type
             outString += numToAlph(tileNumber); // board width
             outString += numToAlph(tileNumber); // board height

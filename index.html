@@ -315,7 +315,7 @@
             }
             if (indexCoords.length > 0) {
                 const el = document.createElement('textarea');
-                el.value = drawnText;
+                el.value = outString;
                 document.body.appendChild(el);
                 el.select();
                 document.execCommand('copy');

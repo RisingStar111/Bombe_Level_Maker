@@ -308,10 +308,11 @@
                     } else if (drawnText === "Triangle") {
                         drawTriangle(xPos, yPos, alternateRow);
                         xPos += tileOffsetX;
-                        yPos -= alternateRow ? tileOffsetY / (2 * Math.sqrt(3)) : 2 * tileOffsetY / Math.sqrt(3);
+                        yPos -= alternateRow ? tileOffsetX / Math.sqrt(3) : (Math.sqrt(3) - 1) * tileOffsetX / Math.sqrt(3);
                         alternateRow = !alternateRow;
                     } else if (drawnText === "Hexagon") {
-                        drawHexagon(xPos + (j % 2 === 0 ? 0 : tileOffsetX / 2), yPos);
+                        xPos = xPos + (j % 2 === 0 ? 0 : tileOffsetX / 2);
+                        drawHexagon(xPos, yPos);
                         xPos += tileOffsetX/2;
                         yPos -= tileOffsetY/3;
                     }

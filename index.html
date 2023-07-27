@@ -55,11 +55,11 @@
             <input type="text" id="tileSizeInput2" oninput="updateTileSize()" maxlength="3" pattern="[0-9]*">
         </div>
         <div>
-            <input type="checkbox" id="toggleInfinite" onchange="toggleTiling()"> Toggle Infinite
+            <input type="checkbox" id="toggleInfinite" onchange="toggleTiling()"> Infinite
         </div>
     </div>
     <div id="controlPanel">
-        <input type="checkbox" id="toggleHidden" onchange="toggleHidden()"> Toggle Hidden
+        <input type="checkbox" id="toggleHidden" onchange="toggleHidden()"> Hidden
         <div id="selectionPanel">
             <button class="selectionButton" onclick="setSelection('x')">x</button>
             <button class="selectionButton" onclick="setSelection('x+')">x+</button>
@@ -82,7 +82,7 @@
             <label for="chosenNumberInput">Chosen Number:</label>
             <input type="text" id="chosenNumberInput" oninput="updateChosenNumber()" maxlength="5" pattern="[0-9]*">
         </div>
-        <div id="lastClickDisplay"></div>
+        <!-- <div id="lastClickDisplay"></div> -->
     </div>
 
     <script>
@@ -189,7 +189,7 @@
         }
 
         function displayLastClickPosition(x, y) {
-            lastClickDisplay.innerText = `Last Click Position: (x: ${x}, y: ${y})`;
+            // lastClickDisplay.innerText = `Last Click Position: (x: ${x}, y: ${y})`;
         }
 
         function displayShapeInfo(x, y) {

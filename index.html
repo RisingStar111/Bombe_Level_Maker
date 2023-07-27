@@ -50,6 +50,10 @@
             <label for="tileSizeInput">Board Width:</label>
             <input type="text" id="tileSizeInput" oninput="updateTileSize()" maxlength="3" pattern="[0-9]*">
         </div>
+        <div>
+            <label for="tileSizeInput2">Board Height:</label>
+            <input type="text" id="tileSizeInput2" oninput="updateTileSize()" maxlength="3" pattern="[0-9]*">
+        </div>
     </div>
     <div id="controlPanel">
         <input type="checkbox" id="toggleInfinite" onchange="toggleTiling()"> Toggle Infinite
@@ -87,7 +91,8 @@
         let infiniteTiling = false;
         let hidden = false;
         const lastClickDisplay = document.getElementById('lastClickDisplay');
-        let tileNumber = 4; // Default text size
+        let tileNumberX = 4; // Default text size
+        let tileNumberY = 4; // Default text size
         let tileSize = 400/tileNumber;
         let selection = ''; // Stores the selected option
         let chosenNumber = 0; // Default value for chosen number
@@ -166,11 +171,14 @@
         function updateTileSize() {
             const inputElement = document.getElementById('tileSizeInput');
             const value = inputElement.value;
+            const inputElement2 = document.getElementById('tileSizeInput2');
+            const value2 = inputElement2.value;
 
             // Check if the input is a valid number and update the tileSize variable
             if (/^\d+$/.test(value)) {
-                tileNumber = parseInt(value, 10);
-                tileSize = 400/tileNumber;
+                tileNumberX = parseInt(value, 10);
+                tileNumberY = parseInt(value2, 10);
+                tileSize = 400/Math.max(tileNumberX, tileNumberY);
                 drawShapeOnCanvas();
             } else {
                 // If the input is not a valid number, set it back to the previous value
@@ -302,8 +310,8 @@
         function exportTextToClipboard() {
             let outString = "{\"level\":\"";
             outString += typeToAlph[drawnText]; // board type
-            outString += numToAlph(tileNumber); // board width
-            outString += numToAlph(tileNumber); // board height
+            outString += numToAlph(tileNumberX); // board width
+            outString += numToAlph(tileNumberY); // board height
             outString += infiniteTiling ? "B" : "A"; // wrap type, no recursive support yet
             for (let i = 0; i < indexCoords.length; i++) {
                 if (indexCoords[i].hidden) { // hidden
@@ -356,10 +364,10 @@
             const tileOffsetX = drawnText === "Triangle" ? tileSize / 2 : tileSize;
             const tileOffsetY = drawnText === "Square" ? tileSize : (3 / Math.sqrt(3) * tileSize) / 2;
 
-            for (let j = 0; j < tileNumber; j += 1) {
+            for (let j = 0; j < tileNumberY; j += 1) {
             let alternateRow = j % 2 === 0 ? true : false;
             
-                for (let i = 0; i < tileNumber; i += 1) {
+                for (let i = 0; i < tileNumberX; i += 1) {
                     let xPos = i * tileOffsetX;
                     let yPos = j * tileOffsetY;
                     if (drawnText === "Square") {
@@ -377,7 +385,7 @@
                         xPos += tileOffsetX/2;
                         yPos += 2*tileOffsetY/3;
                     }
-                    indexCoords.push(new IndexCoord(i + j * tileNumber, Math.max(Math.min(xPos, canvas.width), 0), Math.max(Math.min(yPos, canvas.height), 0)));
+                    indexCoords.push(new IndexCoord(i + j * tileNumberX, Math.max(Math.min(xPos, canvas.width), 0), Math.max(Math.min(yPos, canvas.height), 0)));
                 }
             }
         }

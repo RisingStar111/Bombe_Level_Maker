@@ -300,7 +300,7 @@
         }
 
         function exportTextToClipboard() {
-            let outString = "";
+            let outString = "{\"";
             outString += typeToAlph[drawnText]; // board type
             outString += numToAlph(tileNumber); // board width
             outString += numToAlph(tileNumber); // board height
@@ -312,6 +312,7 @@
                 outString += indexCoords[i].clueType;
                 outString += numToAlph(indexCoords[i].clueNumber - 1);
             }
+            outString += "\"}";
             if (indexCoords.length > 0) {
                 const el = document.createElement('textarea');
                 el.value = outString;

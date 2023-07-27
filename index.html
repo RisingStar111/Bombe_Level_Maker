@@ -233,7 +233,7 @@
             displayShapeInfo(x, y);
             let closest = closestIndexCoord(x, y);
             if (closest != null) {
-                drawText(closest.x, closest.y, selectionToText(selection, chosenNumber));
+                drawText(closest.x, closest.y, selectionToText(selection, chosenNumber), Math.max(10, tileSize / 5));
                 closest.clueNumber = chosenNumber;
                 closest.clueType = typeToAlph[selection];
                 closest.hidden = hidden;
@@ -257,10 +257,10 @@
             return text;
         }
 
-        function drawText(x, y, text) {
-            ctx.clearRect(x, Math.max(0, y-20), 12*text.length, 20);
+        function drawText(x, y, text, fontsize) {
             ctx.fillStyle = 'black';
-            ctx.font = '20px Arial';
+            ctx.font = fontsize + 'px Arial';
+            ctx.clearRect(x, Math.max(0, y-20), ctx.measureText(txt).width, 20);
             ctx.fillText(text, x, y);
         }
 
@@ -348,7 +348,6 @@
 
         function toggleTiling() {
             infiniteTiling = document.getElementById('toggleInfinite').checked;
-            drawShapeOnCanvas();
         }
         function toggleHidden() {
             hidden = document.getElementById('toggleHidden').checked;
@@ -370,8 +369,8 @@
             let alternateRow = j % 2 === 0 ? true : false;
             
                 for (let i = 0; i < tileNumberX; i += 1) {
-                    let xPos = i * tileOffsetX;
-                    let yPos = j * tileOffsetY;
+                    let xPos = i * tileOffsetX + 10;
+                    let yPos = j * tileOffsetY + 10;
                     if (drawnText === "Square") {
                         drawSquare(xPos, yPos);
                         xPos += tileOffsetX/2;

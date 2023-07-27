@@ -102,7 +102,7 @@
         function closestIndexCoord(x, y) {
             let closest = null;
             let closestDistance = Number.MAX_SAFE_INTEGER;
-            for (let i = 0; i < indexCoords.length, i += 1) {
+            for (let i = 0; i < indexCoords.length; i += 1) {
                 const dist = indexCoords[i].sqrDistance(x, y);
                 if (dist < closestDistance) {
                     closestDistance = dist;

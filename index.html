@@ -85,6 +85,32 @@
         let tileSize = 400/tileNumber;
         let selection = ''; // Stores the selected option
         let chosenNumber = 0; // Default value for chosen number
+        let indexCoords = [];
+
+        class IndexCoord {
+            constructor(index, x, y) {
+                this.index = index;
+                this.x = x;
+                this.y = y;
+            }
+
+            function sqrDistance(x, y) {
+                return Math.pow(this.x - x, 2) + Math.pow(this.y - y, 2);
+            }
+        }
+
+        function closestIndexCoord(x, y) {
+            let closest = null;
+            let closestDistance = Number.MAX_SAFE_INTEGER;
+            for (int i = 0; i < indexCoords.length, i += 1) {
+                const dist = indexCoords[i].sqrDistance(x, y);
+                if (dist < closestDistance) {
+                    closestDistance = dist;
+                    closest = indexCoords[i];
+                }
+            }
+            return closest;
+        }
 
         function updateChosenNumber() {
             const inputElement = document.getElementById('chosenNumberInput');
@@ -162,7 +188,10 @@
             console.log('Clicked at (x, y):', x, y);
             displayLastClickPosition(x, y);
             displayShapeInfo(x, y);
-            drawText(x, y, selectionToText(selection, chosenNumber));
+            let closest = closestIndexCoord(x, y);
+            if (closest != null) {
+                drawText(closest.x, closest.y, selectionToText(selection, chosenNumber));
+            }
         });
 
         function selectionToText(text, number) {
@@ -183,7 +212,7 @@
         }
 
         function drawText(x, y, text) {
-            // ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.clearRect(x, Math.min(0, y-20), 5*text.length, 20);
             ctx.fillStyle = 'black';
             ctx.font = '20px Arial';
             ctx.fillText(text, x, y);
@@ -261,26 +290,27 @@
 
         function drawShapeOnCanvas() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+            indexCoords = [];
 
             const tileOffsetX = drawnText === "Triangle" ? tileSize / 2 : tileSize;
             const tileOffsetY = drawnText === "Square" ? tileSize : (3 / Math.sqrt(3) * tileSize) / 2;
-            let rowOffset = drawnText === "Triangle" ? 0 : tileOffsetX / 2;
 
-            for (let i = 0; i < canvas.width + tileOffsetX; i += tileOffsetX) {
-                let alternateRow = (rowOffset === 0) ? false : true;
+            for (let i = 0; i < tileNumber; i += 1) {
+                let alternateRow = j % 2 === 0 ? false : true;
 
-                for (let j = 0; j < canvas.height + tileOffsetY; j += tileOffsetY) {
+                for (let j = 0; j < tileNumber; j += 1) {
+                    let xPos = i * tileOffsetX;
+                    let yPox = j * tileOffsetY;
                     if (drawnText === "Square") {
-                        drawSquare(i, j);
+                        drawSquare(xPos, yPos);
                     } else if (drawnText === "Triangle") {
-                        drawTriangle(i, j, alternateRow);
+                        drawTriangle(xPos, yPos, alternateRow);
                         alternateRow = !alternateRow;
                     } else if (drawnText === "Hexagon") {
-                        drawHexagon(i + (j % (tileOffsetY * 2) === 0 ? 0 : tileOffsetX / 2), j);
-                        console.log(j, tileOffsetY, (j % (tileOffsetY * 2)));
+                        drawHexagon(xPos + (j % 2 === 0 ? 0 : tileOffsetX / 2), yPos);
                     }
+                    indexCoords.push(new IndexCoord(i + j * tileNumber, xPos, yPos));
                 }
-                rowOffset = (rowOffset === 0) ? tileOffsetX / 2 : 0;
             }
         }
     </script>

@@ -47,7 +47,7 @@
             <button onclick="exportTextToClipboard()">Export Text</button>
         </div>
         <div>
-            <label for="tileSizeInput">Tile Size:</label>
+            <label for="tileSizeInput">Board Width:</label>
             <input type="text" id="tileSizeInput" oninput="updateTileSize()" maxlength="3" pattern="[0-9]*">
         </div>
     </div>
@@ -59,6 +59,8 @@
             <button class="selectionButton" onclick="setSelection('x-')">x-</button>
             <button class="selectionButton" onclick="setSelection('!x')">!x</button>
             <button class="selectionButton" onclick="setSelection('x+2*')">x+2*</button>
+        </div>
+        <div id="selectionPanel2">
             <button class="selectionButton" onclick="setSelection('x/x+1')">x/x+1</button>
             <button class="selectionButton" onclick="setSelection('x/x+2')">x/x+2</button>
             <button class="selectionButton" onclick="setSelection('x/x+3')">x/x+3</button>
@@ -77,9 +79,10 @@
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
         let drawnText = "";
-        let infiniteTiling = false;
+        let infiniteTiling = true;
         const lastClickDisplay = document.getElementById('lastClickDisplay');
-        let tileSize = 100; // Default text size
+        let tileNumber = 4; // Default text size
+        let tileSize = 400/tileSize;
         let selection = ''; // Stores the selected option
         let chosenNumber = 0; // Default value for chosen number
 
@@ -107,7 +110,8 @@
 
             // Check if the input is a valid number and update the tileSize variable
             if (/^\d+$/.test(value)) {
-                tileSize = parseInt(value, 10);
+                tileNumber = parseInt(value, 10);
+                tileSize = 400/tileSize;
                 drawShapeOnCanvas();
             } else {
                 // If the input is not a valid number, set it back to the previous value
@@ -158,14 +162,18 @@
             console.log('Clicked at (x, y):', x, y);
             displayLastClickPosition(x, y);
             displayShapeInfo(x, y);
+            drawText(x, y, selectionToText(selection, chosenNumber));
         });
 
-        function drawText() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        function selectionToText(text, number) {
+            text.replace(/x/g, number.ToString());
+        }
+
+        function drawText(x, y, text) {
+            // ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = 'black';
             ctx.font = '20px Arial';
-            const text = "Sample Text";
-            ctx.fillText(text, 50, 100);
+            ctx.fillText(text, x, y);
             drawnText = text;
         }
 

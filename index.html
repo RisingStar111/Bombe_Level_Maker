@@ -53,6 +53,7 @@
     </div>
     <div id="controlPanel">
         <input type="checkbox" id="toggleInfinite" onchange="toggleTiling()"> Toggle Infinite
+        <input type="checkbox" id="toggleHidden" onchange="toggleHidden()"> Toggle Hidden
         <div id="selectionPanel">
             <button class="selectionButton" onclick="setSelection('x')">x</button>
             <button class="selectionButton" onclick="setSelection('x+')">x+</button>
@@ -67,6 +68,10 @@
             <button class="selectionButton" onclick="setSelection('x/x+1/x+2')">x/x+1/x+2</button>
             <button class="selectionButton" onclick="setSelection('x/x+2/x+4')">x/x+2/x+4</button>
         </div>
+        <div id="selectionPanel3">
+            <button class="selectionButton" onclick="setSelection('Clear')">Clear</button>
+            <button class="selectionButton" onclick="setSelection('Bomb')">Bomb</button>
+        </div>
         <div>
             <label for="chosenNumberInput">Chosen Number:</label>
             <input type="text" id="chosenNumberInput" oninput="updateChosenNumber()" maxlength="5" pattern="[0-9]*">
@@ -80,18 +85,46 @@
         const ctx = canvas.getContext('2d');
         let drawnText = "";
         let infiniteTiling = true;
+        let hidden = false;
         const lastClickDisplay = document.getElementById('lastClickDisplay');
         let tileNumber = 4; // Default text size
         let tileSize = 400/tileNumber;
         let selection = ''; // Stores the selected option
         let chosenNumber = 0; // Default value for chosen number
         let indexCoords = [];
+        let typeToAlph = [];
+        initializeTypeToAlph();
+
+        function initializeTypeToAlph() {
+            typeToAlph["x"] = "B";
+            typeToAlph["x+"] = "D";
+            typeToAlph["x-"] = "C";
+            typeToAlph["!x"] = "I";
+            typeToAlph["x+2*"] = "J";
+            typeToAlph["x/x+1"] = "K";
+            typeToAlph["x/x+2"] = "E";
+            typeToAlph["x/x+3"] = "F";
+            typeToAlph["x/x+1/x+2"] = "L";
+            typeToAlph["x/x+2/x+4"] = "G";
+            typeToAlph["Clear"] = "?";
+            typeToAlph["Bomb"] = "!";
+            typeToAlph["Square"] = "A";
+            typeToAlph["Triangle"] = "B";
+            typeToAlph["Hexagon"] = "C";
+        }
+
+        function numToAlph(num) {
+            return String.fromCharCode(num + 64);
+        }
 
         class IndexCoord {
             constructor(index, x, y) {
                 this.index = index;
                 this.x = x;
                 this.y = y;
+                this.clueType = '?';
+                this.clueNumber = 0;
+                this.hidden = false;
             }
 
             sqrDistance(x, y) {
@@ -191,6 +224,9 @@
             let closest = closestIndexCoord(x, y);
             if (closest != null) {
                 drawText(closest.x, closest.y, selectionToText(selection, chosenNumber));
+                closest.clueNumber = chosenNumber;
+                closest.clueType = typeToAlph[selection];
+                closest.hidden = hidden;
             }
         });
 
@@ -265,22 +301,45 @@
         }
 
         function exportTextToClipboard() {
-            if (drawnText) {
+            let outString = "";
+            outString += typeToAlph[drawnText]; // board type
+            outString += numToAlph(tileNumber); // board width
+            outString += numToAlph(tileNumber); // board height
+            outString += infiniteTiling ? "B" : "A"; // wrap type, no recursive support yet
+            for (let i = 0; i < indexCoords.length; i++) {
+                if (indexCoords[i].hidden) { // hidden
+                    outString += "_";
+                    outString += indexCoords[i].clueType;
+                    outString += numToAlph(indexCoords[i].clueNumber);
+                }
+            }
+            if (indexCoords.length > 0) {
                 const el = document.createElement('textarea');
                 el.value = drawnText;
                 document.body.appendChild(el);
                 el.select();
                 document.execCommand('copy');
                 document.body.removeChild(el);
-                alert('Text copied to clipboard: ' + drawnText);
-            } else {
-                alert('No text to copy.');
             }
+            // if (drawnText) {
+            //     const el = document.createElement('textarea');
+            //     el.value = drawnText;
+            //     document.body.appendChild(el);
+            //     el.select();
+            //     document.execCommand('copy');
+            //     document.body.removeChild(el);
+            //     alert('Text copied to clipboard: ' + drawnText);
+            // } else {
+            //     alert('No text to copy.');
+            // }
         }
 
         function toggleTiling() {
             infiniteTiling = document.getElementById('toggleInfinite').checked;
             drawShapeOnCanvas();
+        }
+        function toggleHidden() {
+            hidden = document.getElementById('toggleHidden').checked;
         }
 
         function setShape(shape) {

@@ -166,7 +166,7 @@
         });
 
         function selectionToText(text, number) {
-            if (!text.contains("/")) {
+            if (!text.includes("/")) {
                 text = text.replace(/x/g, number);
             } else if (text === "x/x+1") {
                 text = number + "/" + (number + 1);
@@ -266,31 +266,21 @@
             const tileOffsetY = drawnText === "Square" ? tileSize : (3 / Math.sqrt(3) * tileSize) / 2;
             let rowOffset = drawnText === "Triangle" ? 0 : tileOffsetX / 2;
 
-            if (infiniteTiling) {
-                for (let i = 0; i < canvas.width + tileOffsetX; i += tileOffsetX) {
-                    let alternateRow = (rowOffset === 0) ? false : true;
+            for (let i = 0; i < canvas.width + tileOffsetX; i += tileOffsetX) {
+                let alternateRow = (rowOffset === 0) ? false : true;
 
-                    for (let j = 0; j < canvas.height + tileOffsetY; j += tileOffsetY) {
-                        if (drawnText === "Square") {
-                            drawSquare(i, j);
-                        } else if (drawnText === "Triangle") {
-                            drawTriangle(i, j, alternateRow);
-                            alternateRow = !alternateRow;
-                        } else if (drawnText === "Hexagon") {
-                            drawHexagon(i + (j % (tileOffsetY * 2) === 0 ? 0 : tileOffsetX / 2), j);
-                            console.log(j, tileOffsetY, (j % (tileOffsetY * 2)));
-                        }
+                for (let j = 0; j < canvas.height + tileOffsetY; j += tileOffsetY) {
+                    if (drawnText === "Square") {
+                        drawSquare(i, j);
+                    } else if (drawnText === "Triangle") {
+                        drawTriangle(i, j, alternateRow);
+                        alternateRow = !alternateRow;
+                    } else if (drawnText === "Hexagon") {
+                        drawHexagon(i + (j % (tileOffsetY * 2) === 0 ? 0 : tileOffsetX / 2), j);
+                        console.log(j, tileOffsetY, (j % (tileOffsetY * 2)));
                     }
-                    rowOffset = (rowOffset === 0) ? tileOffsetX / 2 : 0;
                 }
-            } else {
-                if (drawnText === "Square") {
-                    drawSquare(tileOffsetX, tileOffsetY);
-                } else if (drawnText === "Triangle") {
-                    drawTriangle(tileOffsetX, tileOffsetY, false);
-                } else if (drawnText === "Hexagon") {
-                    drawHexagon(tileOffsetX, tileOffsetY);
-                }
+                rowOffset = (rowOffset === 0) ? tileOffsetX / 2 : 0;
             }
         }
     </script>

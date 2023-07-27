@@ -260,7 +260,7 @@
         function drawText(x, y, text, fontsize) {
             ctx.fillStyle = 'black';
             ctx.font = fontsize + 'px Arial';
-            ctx.clearRect(x, Math.max(0, y-20), ctx.measureText(txt).width, 20);
+            ctx.clearRect(x, Math.max(0, y-20), ctx.measureText(text).width, 20);
             ctx.fillText(text, x, y);
         }
 

@@ -106,7 +106,7 @@
             typeToAlph["x/x+3"] = "F";
             typeToAlph["x/x+1/x+2"] = "L";
             typeToAlph["x/x+2/x+4"] = "G";
-            typeToAlph["Clear"] = "?";
+            typeToAlph["Clear"] = "A";
             typeToAlph["Bomb"] = "!";
             typeToAlph["Square"] = "A";
             typeToAlph["Triangle"] = "B";
@@ -122,9 +122,9 @@
                 this.index = index;
                 this.x = x;
                 this.y = y;
-                this.clueType = '?';
+                this.clueType = 'A';
                 this.clueNumber = 0;
-                this.hidden = false;
+                this.hidden = true;
             }
 
             sqrDistance(x, y) {

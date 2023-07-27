@@ -310,7 +310,9 @@
                     outString += "_";
                 }
                 outString += indexCoords[i].clueType;
-                outString += numToAlph(indexCoords[i].clueNumber - 1);
+                if (indexCoords[i].clueType != "!") {
+                    outString += numToAlph(indexCoords[i].clueNumber - 1);
+                }
             }
             outString += "\"}";
             if (indexCoords.length > 0) {
